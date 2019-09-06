@@ -156,6 +156,8 @@
       "channel_3 message_5"
     ];
     
+    var g_num = '1';
+
     var socket = io();
     $(function () {
       /*
@@ -168,7 +170,13 @@
       */
 
       $('form').submit(function () {
-        socket.emit('chat message', $('#message').val());
+        var msg = $('#message').val();
+        //console.log(g_num);
+        sent_data = {
+          'channel': g_num,
+          'message': $('#message').val(),
+        }
+        socket.emit('chat message', msg);
         $('#message').val('');
         return false;
       });
@@ -177,34 +185,35 @@
       //});
 
       // クリックしたときの関数
-      $('.tab li').click(function () {
-
-        // 〜〜コンテンツについての処理〜〜
-        //クリックされたタブの番号をindexに格納。
-        var index = $('.tab li').index(this);
-        //コンテンツを一旦全て非表示に。
-        $('.contents>li').css('display', 'none');
-        // クリックされた番号のコンテンツを表示。
-        $('.contents>li').eq(index).css('display', 'block');
-
-        // 〜〜タブについての処理〜〜
-        // 一度タブについている'active'を消し
-        $('.tab li').removeClass('active');
-        //クリックされたタブのみに'active'をつける。
-        $(this).addClass('active')
-      });
+      //$('.tab li').click(function () {
+//
+      //  // 〜〜コンテンツについての処理〜〜
+      //  //クリックされたタブの番号をindexに格納。
+      //  var index = $('.tab li').index(this);
+      //  //コンテンツを一旦全て非表示に。
+      //  $('.contents>li').css('display', 'none');
+      //  // クリックされた番号のコンテンツを表示。
+      //  $('.contents>li').eq(index).css('display', 'block');
+//
+      //  // 〜〜タブについての処理〜〜
+      //  // 一度タブについている'active'を消し
+      //  $('.tab li').removeClass('active');
+      //  //クリックされたタブのみに'active'をつける。
+      //  $(this).addClass('active')
+      //});
     });
 
     var app = new Vue({
       el: '#show',
       data: {
-        isActive: '1',
+        isActive: g_num,
         textInput: "",
         messages: channel_1_data
       },
       methods: {
         change: function (num) {
-          this.isActive = num
+          this.isActive = num;
+          g_num = num;
           //this.messages = getDynamDB();
           if (num === '1') {
             this.messages = channel_1_data
@@ -214,13 +223,14 @@
             this.messages = channel_3_data
           }
         },
-        sendMessage: function (e) {
-          e.preventDefault();
-          socket.emit('chat message', this.textInput);
-          this.textInput = '';
-        }
+        //sendMessage: function (e) {
+        //  e.preventDefault();
+        //  socket.emit('chat message', this.textInput);
+        //  this.textInput = '';
+        //}
       },
       mounted(){
+        console.log("mounted");
         socket.on('chat message',function(msg){
           this.messages.push(msg);
         }.bind(this));
