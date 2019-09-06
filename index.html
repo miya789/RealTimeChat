@@ -78,7 +78,7 @@
       display: flex;
       flex-direction: column;
       font-size: 18px;
-      width: 15%;
+      width: 20%;
       height: auto;
       background: #3f0e40;
     }
@@ -104,7 +104,7 @@
     }
 
     .contents {
-      width: 85%;
+      width: 80%;
       list-style: none;
     }
 
@@ -137,11 +137,14 @@
       <div class="vue">
         <ul class="tab-container">
           <li class="tab" v-on:click="change('1')"
-            v-bind:class="{'active': isActive === '1', 'unread': status.channel_1 == true}"># Channel 1</li>
+            v-bind:class="{'active': isActive === '1', 'unread': status.channel_1 == true}"># Channel 1
+          </li>
           <li class="tab" v-on:click="change('2')"
-            v-bind:class="{'active': isActive === '2', 'unread': status.channel_2 == true}"># Channel 2</li>
+            v-bind:class="{'active': isActive === '2', 'unread': status.channel_2 == true}"># Channel 2
+          </li>
           <li class="tab" v-on:click="change('3')"
-            v-bind:class="{'active': isActive === '3', 'unread': status.channel_3 == true}"># Channel 3</li>
+            v-bind:class="{'active': isActive === '3', 'unread': status.channel_3 == true}"># Channel 3
+          </li>
         </ul>
 
         <ul class="contents">
