@@ -166,19 +166,16 @@
         })
       }
       */
+
       $('form').submit(function () {
         socket.emit('chat message', $('#message').val());
         $('#message').val('');
         return false;
       });
-      $('form#channel').submit(function () {
-        console.log("aaa");
-        return false;
-      });
-      socket.on('chat message', function (msg) {
-        console.log(channel_1_data)
-        channel_1_data.push(msg);
-      });
+      //socket.on('chat message', function (msg) {
+      //  console.log(channel_1_data)
+      //});
+
       // クリックしたときの関数
       $('.tab li').click(function () {
 
