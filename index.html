@@ -13,6 +13,12 @@
 
     .container {
       margin: 0 auto;
+      height: 1080px;
+    }
+
+    #show,
+    .vue {
+      height: 100%;
     }
 
     body {
@@ -20,11 +26,9 @@
     }
 
     form {
-      background: #000;
+      background: #3f0e40;
       padding: 3px;
-      /*
-      position: absolute;
-      */
+      position: fixed;
       bottom: 0;
       width: 100%;
     }
@@ -38,42 +42,52 @@
 
     form button {
       width: 9%;
-      background: rgb(130, 224, 255);
+      background: #dddddd;
       border: none;
       padding: 10px;
     }
 
-    form#channel {
-      background: yellow;
-      padding: 3px;
-      bottom: 100;
-      width: 100%;
-    }
-
-    #messages {
+    .messages {
       list-style-type: none;
       margin: 0;
       padding: 0;
     }
 
-    #messages li {
-      padding: 5px 10px;
+    li.message {
+      margin: 5px 10px;
+      font-size: 16px;
+      height: auto;
+
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: flex;
+      -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+      justify-content: space-between;
+    }
+    li.message:hover {
+      background-color: #f8f8f8;
     }
 
-    #messages li:nth-child(odd) {
-      background: #eee;
+    .vue {
+      display: flex;
     }
 
     .tab-container {
       display: flex;
+      flex-direction: column;
+      font-size: 18px;
+      width: 15%;
+      height: auto;
+      background: #3f0e40;
     }
 
     .tab {
       list-style: none;
       float: left;
-      background: #5f9ea0;
-      padding: 5px 25px;
+      padding: 10px 25px;
       margin-right: 1px;
+      color: #ffffff;
     }
 
     .cf {
@@ -81,11 +95,20 @@
     }
 
     .active {
-      background: #b0e0e6;
+      background: #1164a3;
+    }
+
+    .contents {
+      width: 85%;
+      list-style: none;
     }
 
     .content {
       list-style: none;
+    }
+
+    .time {
+      font-size: 12px;
     }
 
     .content1,
@@ -108,19 +131,23 @@
     <div id="show">
       <div class="vue">
         <ul class="tab-container">
-          <li class="tab" v-on:click="change('1')" v-bind:class="{'active': isActive === '1'}">タブ1</li>
-          <li class="tab" v-on:click="change('2')" v-bind:class="{'active': isActive === '2'}">タブ2</li>
-          <li class="tab" v-on:click="change('3')" v-bind:class="{'active': isActive === '3'}">タブ3</li>
+          <li class="tab" v-on:click="change('1')" v-bind:class="{'active': isActive === '1'}"># Channel 1</li>
+          <li class="tab" v-on:click="change('2')" v-bind:class="{'active': isActive === '2'}"># Channel 2</li>
+          <li class="tab" v-on:click="change('3')" v-bind:class="{'active': isActive === '3'}"># Channel 3</li>
         </ul>
-  
+
         <ul class="contents">
-          <li v-for="message in messages">
-            <!-- <ul id="messages"></ul> -->
-            <ul>{{ message }}</ul>
+          <li class="message" v-for="message in messages">
+            <div>
+              {{ message.message }}
+            </div>
+            <div class="time">
+              {{ message.created_at }}
+            </div>
           </li>
         </ul>
       </div>
-  
+
     </div>
     <div id="send">
       <form action="">
@@ -135,27 +162,60 @@
   <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.min.js"></script>
   <script>
     var channel_1_data = [
-      "channel_1 message_1",
-      "channel_1 message_2",
-      "channel_1 message_3",
-      "channel_1 message_4",
-      "channel_1 message_5"
+      {
+        'message': "channel_1 message_1",
+        'created_at': "2019-09-06 10:43"
+      }, {
+        'message': "channel_1 message_2",
+        'created_at': "2019-09-06 10:43"
+      }, {
+        'message': "channel_1 message_3",
+        'created_at': "2019-09-06 10:43"
+      }, {
+        'message': "channel_1 message_4",
+        'created_at': "2019-09-06 10:43"
+      }, {
+        'message': "channel_1 message_5",
+        'created_at': "2019-09-06 10:43"
+      },
     ];
     var channel_2_data = [
-      "channel_2 message_1",
-      "channel_2 message_2",
-      "channel_2 message_3",
-      "channel_2 message_4",
-      "channel_2 message_5"
+      {
+        'message': "channel_2 message_1",
+        'created_at': "2019-09-06 10:43"
+      }, {
+        'message': "channel_2 message_2",
+        'created_at': "2019-09-06 10:43"
+      }, {
+        'message': "channel_2 message_3",
+        'created_at': "2019-09-06 10:43"
+      }, {
+        'message': "channel_2 message_4",
+        'created_at': "2019-09-06 10:43"
+      }, {
+        'message': "channel_2 message_5",
+        'created_at': "2019-09-06 10:43"
+      },
     ];
     var channel_3_data = [
-      "channel_3 message_1",
-      "channel_3 message_2",
-      "channel_3 message_3",
-      "channel_3 message_4",
-      "channel_3 message_5"
+      {
+        'message': "channel_3 message_1",
+        'created_at': "2019-09-06 10:43"
+      }, {
+        'message': "channel_3 message_2",
+        'created_at': "2019-09-06 10:43"
+      }, {
+        'message': "channel_3 message_3",
+        'created_at': "2019-09-06 10:43"
+      }, {
+        'message': "channel_3 message_4",
+        'created_at': "2019-09-06 10:43"
+      }, {
+        'message': "channel_3 message_5",
+        'created_at': "2019-09-06 10:43"
+      },
     ];
-    
+
     var g_num = '1';
 
     var socket = io();
@@ -186,7 +246,7 @@
 
       // クリックしたときの関数
       //$('.tab li').click(function () {
-//
+      //
       //  // 〜〜コンテンツについての処理〜〜
       //  //クリックされたタブの番号をindexに格納。
       //  var index = $('.tab li').index(this);
@@ -194,7 +254,7 @@
       //  $('.contents>li').css('display', 'none');
       //  // クリックされた番号のコンテンツを表示。
       //  $('.contents>li').eq(index).css('display', 'block');
-//
+      //
       //  // 〜〜タブについての処理〜〜
       //  // 一度タブについている'active'を消し
       //  $('.tab li').removeClass('active');
@@ -202,6 +262,23 @@
       //  $(this).addClass('active')
       //});
     });
+
+    var toDoubleDigits = function (num) {
+      num += "";
+      if (num.length === 1) {
+        num = "0" + num;
+      }
+      return num;
+    };
+
+    function getNowTime(now) {
+      var yyyy = now.getFullYear();
+      var mm = toDoubleDigits(now.getMonth() + 1);
+      var dd = toDoubleDigits(now.getDay() + 1);
+      var hh = toDoubleDigits(now.getHours());
+      var mi = toDoubleDigits(now.getMinutes());
+      return yyyy + "-" + mm + "-" + dd + " " + hh + ":" + mi;
+    }
 
     var app = new Vue({
       el: '#show',
@@ -229,10 +306,11 @@
         //  this.textInput = '';
         //}
       },
-      mounted(){
+      mounted() {
         console.log("mounted");
-        socket.on('chat message',function(msg){
-          this.messages.push(msg);
+        socket.on('chat message', function (msg) {
+          now = new Date();
+          this.messages.push({ 'message': msg, 'created_at': getNowTime(new Date()) });
         }.bind(this));
       }
     })
