@@ -65,6 +65,7 @@
       -ms-flex-pack: justify;
       justify-content: space-between;
     }
+
     li.message:hover {
       background-color: #f8f8f8;
     }
@@ -96,6 +97,10 @@
 
     .active {
       background: #1164a3;
+    }
+
+    .unread {
+      font-weight: bold;
     }
 
     .contents {
@@ -131,13 +136,32 @@
     <div id="show">
       <div class="vue">
         <ul class="tab-container">
-          <li class="tab" v-on:click="change('1')" v-bind:class="{'active': isActive === '1'}"># Channel 1</li>
-          <li class="tab" v-on:click="change('2')" v-bind:class="{'active': isActive === '2'}"># Channel 2</li>
-          <li class="tab" v-on:click="change('3')" v-bind:class="{'active': isActive === '3'}"># Channel 3</li>
+          <li class="tab" v-on:click="change('1')"
+            v-bind:class="{'active': isActive === '1', 'unread': status.channel_1 == true}"># Channel 1</li>
+          <li class="tab" v-on:click="change('2')"
+            v-bind:class="{'active': isActive === '2', 'unread': status.channel_2 == true}"># Channel 2</li>
+          <li class="tab" v-on:click="change('3')"
+            v-bind:class="{'active': isActive === '3', 'unread': status.channel_3 == true}"># Channel 3</li>
         </ul>
 
         <ul class="contents">
-          <li class="message" v-for="message in messages">
+          <li v-if="activeChannel == 'channel_1'" class="message" v-for="message in messages.channel_1">
+            <div>
+              {{ message.message }}
+            </div>
+            <div class="time">
+              {{ message.created_at }}
+            </div>
+          </li>
+          <li v-if="activeChannel == 'channel_2'" class="message" v-for="message in messages.channel_2">
+            <div>
+              {{ message.message }}
+            </div>
+            <div class="time">
+              {{ message.created_at }}
+            </div>
+          </li>
+          <li v-if="activeChannel == 'channel_3'" class="message" v-for="message in messages.channel_3">
             <div>
               {{ message.message }}
             </div>
@@ -151,7 +175,7 @@
     </div>
     <div id="send">
       <form action="">
-        <input id="message" autocomplete="off" v-model="textInput" />
+        <input id="message" autocomplete="off" v-model="textInput" placeholder="メッセージ" />
         <button v-on:click="sendMessage">Send</button>
       </form>
     </div>
@@ -161,60 +185,77 @@
   <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.min.js"></script>
   <script>
-    var channel_1_data = [
-      {
-        'message': "channel_1 message_1",
-        'created_at': "2019-09-06 10:43"
-      }, {
-        'message': "channel_1 message_2",
-        'created_at': "2019-09-06 10:43"
-      }, {
-        'message': "channel_1 message_3",
-        'created_at': "2019-09-06 10:43"
-      }, {
-        'message': "channel_1 message_4",
-        'created_at': "2019-09-06 10:43"
-      }, {
-        'message': "channel_1 message_5",
-        'created_at': "2019-09-06 10:43"
-      },
-    ];
-    var channel_2_data = [
-      {
-        'message': "channel_2 message_1",
-        'created_at': "2019-09-06 10:43"
-      }, {
-        'message': "channel_2 message_2",
-        'created_at': "2019-09-06 10:43"
-      }, {
-        'message': "channel_2 message_3",
-        'created_at': "2019-09-06 10:43"
-      }, {
-        'message': "channel_2 message_4",
-        'created_at': "2019-09-06 10:43"
-      }, {
-        'message': "channel_2 message_5",
-        'created_at': "2019-09-06 10:43"
-      },
-    ];
-    var channel_3_data = [
-      {
-        'message': "channel_3 message_1",
-        'created_at': "2019-09-06 10:43"
-      }, {
-        'message': "channel_3 message_2",
-        'created_at': "2019-09-06 10:43"
-      }, {
-        'message': "channel_3 message_3",
-        'created_at': "2019-09-06 10:43"
-      }, {
-        'message': "channel_3 message_4",
-        'created_at': "2019-09-06 10:43"
-      }, {
-        'message': "channel_3 message_5",
-        'created_at': "2019-09-06 10:43"
-      },
-    ];
+    var dummy_message_data = {
+      "channel_1": [
+        {
+          'channel': 1,
+          'message': "channel_1 message_1",
+          'created_at': "2019-09-06 10:43"
+        }, {
+          'channel': 1,
+          'message': "channel_1 message_2",
+          'created_at': "2019-09-06 10:43"
+        }, {
+          'channel': 1,
+          'message': "channel_1 message_3",
+          'created_at': "2019-09-06 10:43"
+        }, {
+          'channel': 1,
+          'message': "channel_1 message_4",
+          'created_at': "2019-09-06 10:43"
+        }, {
+          'channel': 1,
+          'message': "channel_1 message_5",
+          'created_at': "2019-09-06 10:43"
+        },
+      ],
+      "channel_2": [
+        {
+          'channel': 2,
+          'message': "channel_2 message_1",
+          'created_at': "2019-09-06 10:43"
+        }, {
+          'channel': 2,
+          'message': "channel_2 message_2",
+          'created_at': "2019-09-06 10:43"
+        }, {
+          'channel': 2,
+          'message': "channel_2 message_3",
+          'created_at': "2019-09-06 10:43"
+        }, {
+          'channel': 2,
+          'message': "channel_2 message_4",
+          'created_at': "2019-09-06 10:43"
+        }, {
+          'channel': 2,
+          'message': "channel_2 message_5",
+          'created_at': "2019-09-06 10:43"
+        },
+      ],
+      "channel_3": [
+        {
+          'channel': 3,
+          'message': "channel_3 message_1",
+          'created_at': "2019-09-06 10:43"
+        }, {
+          'channel': 3,
+          'message': "channel_3 message_2",
+          'created_at': "2019-09-06 10:43"
+        }, {
+          'channel': 3,
+          'message': "channel_3 message_3",
+          'created_at': "2019-09-06 10:43"
+        }, {
+          'channel': 3,
+          'message': "channel_3 message_4",
+          'created_at': "2019-09-06 10:43"
+        }, {
+          'channel': 3,
+          'message': "channel_3 message_5",
+          'created_at': "2019-09-06 10:43"
+        },
+      ]
+    }
 
     var g_num = '1';
 
@@ -235,8 +276,10 @@
         sent_data = {
           'channel': g_num,
           'message': $('#message').val(),
+          'created_at': getNowTime(new Date()),
         }
-        socket.emit('chat message', msg);
+        console.log(sent_data)
+        socket.emit('chat message', sent_data);
         $('#message').val('');
         return false;
       });
@@ -270,7 +313,6 @@
       }
       return num;
     };
-
     function getNowTime(now) {
       var yyyy = now.getFullYear();
       var mm = toDoubleDigits(now.getMonth() + 1);
@@ -284,8 +326,14 @@
       el: '#show',
       data: {
         isActive: g_num,
+        activeChannel: "channel_1",
         textInput: "",
-        messages: channel_1_data
+        messages: dummy_message_data,
+        status: {
+          'channel_1': false,
+          'channel_2': false,
+          'channel_3': false,
+        }
       },
       methods: {
         change: function (num) {
@@ -293,11 +341,14 @@
           g_num = num;
           //this.messages = getDynamDB();
           if (num === '1') {
-            this.messages = channel_1_data
+            this.activeChannel = "channel_1"
+            this.status.channel_1 = false;
           } else if (num === '2') {
-            this.messages = channel_2_data
+            this.activeChannel = "channel_2"
+            this.status.channel_2 = false;
           } else if (num === '3') {
-            this.messages = channel_3_data
+            this.activeChannel = "channel_3"
+            this.status.channel_3 = false;
           }
         },
         //sendMessage: function (e) {
@@ -309,8 +360,14 @@
       mounted() {
         console.log("mounted");
         socket.on('chat message', function (msg) {
-          now = new Date();
-          this.messages.push({ 'message': msg, 'created_at': getNowTime(new Date()) });
+          console.log(msg)
+          ch_name = "channel_" + eval(msg['channel'])
+          this.messages[ch_name].push({ 'channel': msg['channel'], 'message': msg['message'], 'created_at': msg['created_at'] });
+
+          if (this.activeChannel != ch_name) {
+            console.log(this.status[ch_name])
+            this.status[ch_name] = true;
+          }
         }.bind(this));
       }
     })
