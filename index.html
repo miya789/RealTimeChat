@@ -1,0 +1,235 @@
+<!doctype html>
+<html>
+
+<head>
+  <!-- <link rel="stylesheet" type="text/css" href="custom.css"> -->
+  <title>Socket.IO chat</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    .container {
+      margin: 0 auto;
+    }
+
+    body {
+      font: 13px Helvetica, Arial;
+    }
+
+    form {
+      background: #000;
+      padding: 3px;
+      /*
+      position: absolute;
+      */
+      bottom: 0;
+      width: 100%;
+    }
+
+    form input {
+      border: 0;
+      padding: 10px;
+      width: 90%;
+      margin-right: .5%;
+    }
+
+    form button {
+      width: 9%;
+      background: rgb(130, 224, 255);
+      border: none;
+      padding: 10px;
+    }
+
+    form#channel {
+      background: yellow;
+      padding: 3px;
+      bottom: 100;
+      width: 100%;
+    }
+
+    #messages {
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    #messages li {
+      padding: 5px 10px;
+    }
+
+    #messages li:nth-child(odd) {
+      background: #eee;
+    }
+
+    .tab-container {
+      display: flex;
+    }
+
+    .tab {
+      list-style: none;
+      float: left;
+      background: #5f9ea0;
+      padding: 5px 25px;
+      margin-right: 1px;
+    }
+
+    .cf {
+      overflow: hidden;
+    }
+
+    .active {
+      background: #b0e0e6;
+    }
+
+    .content {
+      list-style: none;
+    }
+
+    .content1,
+    .content2,
+    .content3 {
+      display: none;
+      background: #b0e0e6;
+      padding: 20px;
+      width: 500px;
+    }
+
+    .content_current {
+      display: block;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <div id="show">
+      <div class="vue">
+        <ul class="tab-container">
+          <li class="tab" v-on:click="change('1')" v-bind:class="{'active': isActive === '1'}">タブ1</li>
+          <li class="tab" v-on:click="change('2')" v-bind:class="{'active': isActive === '2'}">タブ2</li>
+          <li class="tab" v-on:click="change('3')" v-bind:class="{'active': isActive === '3'}">タブ3</li>
+        </ul>
+  
+        <ul class="contents">
+          <li v-for="message in messages">
+            <!-- <ul id="messages"></ul> -->
+            <ul>{{ message }}</ul>
+          </li>
+        </ul>
+      </div>
+  
+    </div>
+    <div id="send">
+      <form action="">
+        <input id="message" autocomplete="off" v-model="textInput" />
+        <button v-on:click="sendMessage">Send</button>
+      </form>
+    </div>
+  </div>
+
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.min.js"></script>
+  <script>
+    var channel_1_data = [
+      "channel_1 message_1",
+      "channel_1 message_2",
+      "channel_1 message_3",
+      "channel_1 message_4",
+      "channel_1 message_5"
+    ];
+    var channel_2_data = [
+      "channel_2 message_1",
+      "channel_2 message_2",
+      "channel_2 message_3",
+      "channel_2 message_4",
+      "channel_2 message_5"
+    ];
+    var channel_3_data = [
+      "channel_3 message_1",
+      "channel_3 message_2",
+      "channel_3 message_3",
+      "channel_3 message_4",
+      "channel_3 message_5"
+    ];
+    
+    var socket = io();
+    $(function () {
+      /*
+      const initial_messages = ["message 1", "message 2", "message 3", "message 4", "message 5"]
+      window.onload = function () {
+        initial_messages.forEach((value, index, array) => {
+          $('#messages').append($('<li>').text(value));
+        })
+      }
+      */
+      $('form').submit(function () {
+        socket.emit('chat message', $('#message').val());
+        $('#message').val('');
+        return false;
+      });
+      $('form#channel').submit(function () {
+        console.log("aaa");
+        return false;
+      });
+      socket.on('chat message', function (msg) {
+        console.log(channel_1_data)
+        channel_1_data.push(msg);
+      });
+      // クリックしたときの関数
+      $('.tab li').click(function () {
+
+        // 〜〜コンテンツについての処理〜〜
+        //クリックされたタブの番号をindexに格納。
+        var index = $('.tab li').index(this);
+        //コンテンツを一旦全て非表示に。
+        $('.contents>li').css('display', 'none');
+        // クリックされた番号のコンテンツを表示。
+        $('.contents>li').eq(index).css('display', 'block');
+
+        // 〜〜タブについての処理〜〜
+        // 一度タブについている'active'を消し
+        $('.tab li').removeClass('active');
+        //クリックされたタブのみに'active'をつける。
+        $(this).addClass('active')
+      });
+    });
+
+    var app = new Vue({
+      el: '#show',
+      data: {
+        isActive: '1',
+        textInput: "",
+        messages: channel_1_data
+      },
+      methods: {
+        change: function (num) {
+          this.isActive = num
+          //this.messages = getDynamDB();
+          if (num === '1') {
+            this.messages = channel_1_data
+          } else if (num === '2') {
+            this.messages = channel_2_data
+          } else if (num === '3') {
+            this.messages = channel_3_data
+          }
+        },
+        sendMessage: function (e) {
+          e.preventDefault();
+          socket.emit('chat message', this.textInput);
+          this.textInput = '';
+        }
+      },
+      mounted(){
+        socket.on('chat message',function(msg){
+          this.messages.push(msg);
+        }.bind(this));
+      }
+    })
+  </script>
+</body>
+
+</html>
