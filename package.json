@@ -1,21 +1,22 @@
 {
-	"name": "curious-caravan",
-	"version": "0.1.0",
-	"description": "A node js chat app",
-	"main": "server.js",
-	"scripts": {
-		"start": "node server.js"
-	},
-	"dependencies": {
-		"express": "^4.12.4",
-		"socket.io": "*",
+  "name": "curious-caravan",
+  "version": "0.1.0",
+  "description": "A node js chat app",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.12.4",
+    "socket.io": "*",
     "dotenv": "*",
-    "aws-sdk": "*"
-	},
-	"keywords": [
-		"node",
-		"express",
-		"chat"
-	],
-	"license": "MIT"
+    "aws-sdk": "*",
+    "sqlite": "*"
+  },
+  "keywords": [
+    "node",
+    "express",
+    "chat"
+  ],
+  "license": "MIT"
 }
