@@ -4,131 +4,132 @@
 <head>
   <!-- <link rel="stylesheet" type="text/css" href="custom.css"> -->
   <title>Socket.IO chat</title>
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+  <link rel="stylesheet" href="/custom.css">
+  <!-- <style>
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
 
-    .container {
-      margin: 0 auto;
-      height: 1080px;
-    }
+  .container {
+    margin: 0 auto;
+    height: 1080px;
+  }
 
-    #show,
-    .vue {
-      height: 100%;
-    }
+  #show,
+  .vue {
+    height: 100%;
+  }
 
-    body {
-      font: 13px Helvetica, Arial;
-    }
+  body {
+    font: 13px Helvetica, Arial;
+  }
 
-    form {
-      background: #3f0e40;
-      padding: 3px;
-      position: fixed;
-      bottom: 0;
-      width: 100%;
-    }
+  form {
+    background: #3f0e40;
+    padding: 3px;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+  }
 
-    form input {
-      border: 0;
-      padding: 10px;
-      width: 90%;
-      margin-right: .5%;
-    }
+  form input {
+    border: 0;
+    padding: 10px;
+    width: 90%;
+    margin-right: .5%;
+  }
 
-    form button {
-      width: 9%;
-      background: #dddddd;
-      border: none;
-      padding: 10px;
-    }
+  form button {
+    width: 9%;
+    background: #dddddd;
+    border: none;
+    padding: 10px;
+  }
 
-    .messages {
-      list-style-type: none;
-      margin: 0;
-      padding: 0;
-    }
+  .messages {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+  }
 
-    li.message {
-      margin: 5px 10px;
-      font-size: 16px;
-      height: auto;
+  li.message {
+    margin: 5px 10px;
+    font-size: 16px;
+    height: auto;
 
-      display: -webkit-box;
-      display: -ms-flexbox;
-      display: flex;
-      -webkit-box-pack: justify;
-      -ms-flex-pack: justify;
-      justify-content: space-between;
-    }
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: justify;
+    -ms-flex-pack: justify;
+    justify-content: space-between;
+  }
 
-    li.message:hover {
-      background-color: #f8f8f8;
-    }
+  li.message:hover {
+    background-color: #f8f8f8;
+  }
 
-    .vue {
-      display: flex;
-    }
+  .vue {
+    display: flex;
+  }
 
-    .tab-container {
-      display: flex;
-      flex-direction: column;
-      font-size: 18px;
-      width: 20%;
-      height: auto;
-      background: #3f0e40;
-    }
+  .tab-container {
+    display: flex;
+    flex-direction: column;
+    font-size: 18px;
+    width: 20%;
+    height: auto;
+    background: #3f0e40;
+  }
 
-    .tab {
-      list-style: none;
-      float: left;
-      padding: 10px 25px;
-      margin-right: 1px;
-      color: #ffffff;
-    }
+  .tab {
+    list-style: none;
+    float: left;
+    padding: 10px 25px;
+    margin-right: 1px;
+    color: #ffffff;
+  }
 
-    .cf {
-      overflow: hidden;
-    }
+  .cf {
+    overflow: hidden;
+  }
 
-    .active {
-      background: #1164a3;
-    }
+  .active {
+    background: #1164a3;
+  }
 
-    .unread {
-      font-weight: bold;
-    }
+  .unread {
+    font-weight: bold;
+  }
 
-    .contents {
-      width: 80%;
-      list-style: none;
-    }
+  .contents {
+    width: 80%;
+    list-style: none;
+  }
 
-    .content {
-      list-style: none;
-    }
+  .content {
+    list-style: none;
+  }
 
-    .time {
-      font-size: 12px;
-    }
+  .time {
+    font-size: 12px;
+  }
 
-    .content1,
-    .content2,
-    .content3 {
-      display: none;
-      background: #b0e0e6;
-      padding: 20px;
-      width: 500px;
-    }
+  .content1,
+  .content2,
+  .content3 {
+    display: none;
+    background: #b0e0e6;
+    padding: 20px;
+    width: 500px;
+  }
 
-    .content_current {
-      display: block;
-    }
-  </style>
+  .content_current {
+    display: block;
+  }
+</style> -->
 </head>
 
 <body>
